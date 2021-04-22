@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.loafer.springboot.modules.base.role.dao.BaseRoleDao">
+    
+    <resultMap type="com.loafer.springboot.modules.base.role.dto.BaseRoleDto" id="baseRoleMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="remark" column="remark"/>
+        <collection property="menuIds" javaType="List" ofType="Long">
+            <constructor>
+                <arg column="menu_id"/>
+            </constructor>
+        </collection>
+    </resultMap>
+
+<!--    IPage<BaseRoleDto> queryPage(Page<BaseRoleDto> page, @Param("userId") Long userId, @Param("isDisplay") Integer isDisplay);-->
+    <select id="queryPage" resultType="com.loafer.springboot.modules.base.role.dto.BaseRoleDto">
+        select id, `name`, remark, creator, created_at
+        from base_role
+        where deleted = 0
+        <if test="userId != null">
+            and creator = #{userId}
+        </if>
+        <if test="isDisplay != null">
+            and is_display = #{isDisplay}
+        </if>
+        order by created_at desc
+    </select>
+
+<!--    BaseRoleDto queryById(@Param("id") Long id);-->
+    <select id="queryById" resultMap="baseRoleMap">
+        select br.id, br.`name`, br.remark, br.creator, br.created_at,
+                brm.menu_id
+        from base_role br
+        left join base_role__menu brm on brm.role_id = br.id
+        where br.deleted = 0
+        <if test="id != null">
+            and br.id = #{id}
+        </if>
+    </select>
+
+<!--    List<BaseRoleSelectDto> querySelect(@Param("isDisplay") Integer isDisplay, @Param("userId") Long userId);-->
+    <select id="querySelect" resultType="com.loafer.springboot.modules.base.role.dto.BaseRoleSelectDto">
+        select id, `name`, remark
+        from base_role
+        where deleted = 0
+        <if test="isDisplay != null">
+            and is_display = #{isDisplya}
+        </if>
+        <if test="userId != null">
+            and creator = #{userId}
+        </if>
+    </select>
+</mapper>

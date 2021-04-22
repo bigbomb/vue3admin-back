@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.loafer.springboot.modules.base.menu.dao.BaseMenuDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.loafer.springboot.modules.base.menu.entity.BaseMenuEntity" id="baseMenuMap">
+        <result property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="nameCn" column="name_cn"/>
+        <result property="nameEn" column="name_en"/>
+        <result property="url" column="url"/>
+        <result property="permission" column="permission"/>
+        <result property="type" column="type"/>
+        <result property="icon" column="icon"/>
+        <result property="sort" column="sort"/>
+        <result property="isDisplay" column="is_display"/>
+        <result property="isAlive" column="is_alive"/>
+        <result property="isTab" column="is_tab"/>
+        <result property="isMultiple" column="is_multiple"/>
+        <result property="creator" column="creator"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updater" column="updater"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="deleted" column="deleted"/>
+    </resultMap>
+
+<!--    List<String> queryAllPermission();-->
+    <select id="queryAllPermission" resultType="String">
+        select distinct permission
+        from base_menu
+        where deleted = 0
+    </select>
+
+<!--    List<String> queryPermissionByUserId(@Param("userId") Long userId);-->
+    <select id="queryPermissionByUserId" resultType="String">
+        select distinct bm.permission
+        from base_user__role bur
+        left join base_role__menu brm
+            on brm.role_id = bur.role_id
+        left join base_menu bm
+            on bm.id = brm.menu_id
+        where bur.user_id = #{userId}
+          and bm.deleted = 0
+          and bm.is_display = 1
+    </select>
+
+<!--    List<BaseMenuDto> queryMenuByParentId(@Param("parentId") Long parentId, @Param("menuIds") List<Long> menuIds);-->
+    <select id="queryMenuByParentId" resultType="com.loafer.springboot.modules.base.menu.dto.BaseMenuDto">
+        select id, parent_id, name_cn, name_en, url, `type`, icon, sort, is_tab, is_display, is_multiple, is_alive
+        from base_menu
+        where is_display = 1 and deleted = 0
+        <if test="menuIds != null">
+            and id in
+            <foreach item="menuId" collection="menuIds" open="(" separator="," close=")">
+                #{menuId}
+            </foreach>
+        </if>
+        <if test="parentId != null">
+            and parent_id = #{parentId}
+        </if>
+        order by sort asc, created_at desc
+    </select>
+
+<!--    List<Long> queryAllMenuId();-->
+    <select id="queryAllMenuId" resultType="long">
+        select id
+        from base_menu
+        where is_display = 1 and deleted = 0
+    </select>
+
+<!--    List<BaseMenuDto> queryAllMenuByParentId(@Param("parentId") Long parentId);-->
+    <select id="queryAllMenuByParentId" resultType="com.loafer.springboot.modules.base.menu.dto.BaseMenuDto">
+        select id, parent_id, name_cn, name_en, url, `type`, icon, sort, is_tab, is_display, is_multiple, is_alive, permission
+        from base_menu
+        where deleted = 0
+        <if test="parentId != null">
+            and parent_id = #{parentId}
+        </if>
+        order by sort asc, created_at desc
+    </select>
+
+<!--    List<BaseMenuSelectDto> queryAllMenu(@Param("types") List<Integer> types, @Param("isDisplay") Integer isDisplay);-->
+    <select id="queryAllMenu" resultType="com.loafer.springboot.modules.base.menu.dto.BaseMenuSelectDto">
+        select id, parent_id, name_cn, name_en
+        from base_menu
+        where deleted = 0
+        <if test="isDisplay != null">
+            and is_display = #{isDisplay}
+        </if>
+        <if test="types != null">
+            and `type` in
+            <foreach item="type" collection="types" open="(" separator="," close=")">
+                #{type}
+            </foreach>
+        </if>
+        <if test="menuIds != null">
+            and id in
+            <foreach item="id" collection="menuIds" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        order by sort asc, created_at desc
+    </select>
+
+<!--    BaseMenuDto queryById(@Param("id") Long id);-->
+    <select id="queryById" resultType="com.loafer.springboot.modules.base.menu.dto.BaseMenuDto">
+         select id, parent_id, name_cn, name_en, url, `type`, icon, sort, is_tab, is_display, is_multiple, is_alive, permission
+         from base_menu
+         where deleted = 0 and id = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.loafer.springboot.modules.base.user.dao.BaseUserDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.loafer.springboot.modules.base.user.dto.BaseUserDto" id="userRoleMap">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="salt" column="salt"/>
+        <result property="nickname" column="nickname"/>
+        <result property="mobile" column="mobile"/>
+        <result property="email" column="email"/>
+        <result property="avatar" column="avatar"/>
+        <result property="status" column="status"/>
+        <collection property="roles" javaType="List" ofType="com.loafer.springboot.modules.base.role.dto.BaseRoleDto">
+            <id property="id" column="role_id"></id>
+            <result property="name" column="role_name"/>
+        </collection>
+    </resultMap>
+
+<!--    IPage<BaseUserDto> queryAllPage(Page<?> page);-->
+    <select id="queryAllPage" resultMap="userRoleMap">
+        select u.id, u.username, u.nickname, u.mobile, u.email, u.avatar, u.status,
+               r.id as role_id, r.name as role_name
+        from base_user u
+        left join base_user__role ur
+            on ur.user_id = u.id
+        left join base_role r
+            on r.id = ur.role_id
+                   and r.deleted = 0
+        where u.deleted = 0
+    </select>
+
+<!--    IPage<BaseUserDto> queryByCreatorPage(Page<?> page, @Param("Creator") Long creator);-->
+    <select id="queryByCreatorPage" resultMap="userRoleMap">
+        select u.id, u.username, u.nickname, u.mobile, u.email, u.avatar, u.status,
+               r.id as role_id, r.name as role_name
+        from base_user u
+        left join base_user__role ur
+            on ur.user_id = u.id
+        left join base_role r
+            on r.id = ur.role_id
+                   and r.deleted = 0
+        where u.creator = #{creator} and u.deleted = 0
+    </select>
+
+<!--    BaseUserDto queryById (Long id);-->
+    <select id="queryById" resultMap="userRoleMap">
+        select u.id, u.username, u.nickname, u.mobile, u.email, u.avatar, u.status, u.created_at,
+               r.id as role_id, r.name as role_name
+        from base_user u
+                 left join base_user__role ur
+                           on ur.user_id = u.id
+                 left join base_role r
+                           on r.id = ur.role_id
+                               and r.deleted = 0
+        where u.id = #{id}
+          and u.deleted = 0
+    </select>
+
+<!--    BaseUserDto queryByUsername (@Param("username") String username);-->
+    <select id="queryByUsername" resultType="com.loafer.springboot.modules.base.user.dto.BaseUserDto">
+        select id, username, nickname, mobile, email, avatar
+        from base_user
+        where username = #{username}
+    </select>
+
+</mapper>

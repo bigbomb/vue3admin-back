@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.loafer.springboot.modules.base.token.dao.BaseTokenDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.loafer.springboot.modules.base.token.entity.BaseTokenEntity" id="baseTokenMap">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="salt" column="salt"/>
+    </resultMap>
+
+<!--    BaseTokenEntity queryByToken (@Param("token") String token);-->
+    <select id="queryByToken" resultType="com.loafer.springboot.modules.base.token.entity.BaseTokenEntity">
+        select *
+        from base_token
+        where token = #{token}
+    </select>
+
+<!--    BaseTokenEntity queryByUserId (@Param("userId") Long userId);-->
+    <select id="queryByUserId" resultType="com.loafer.springboot.modules.base.token.entity.BaseTokenEntity">
+        select *
+        from base_token
+        where user_id = #{userId}
+    </select>
+
+</mapper>
