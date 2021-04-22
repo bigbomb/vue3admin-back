@@ -68,7 +68,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserDao, BaseUserEntity
                 .eq("username", baseUserEntity.getUsername());
         int count = this.count(wrapper);
         if (count != 0) {
-            throw new RunException(5208);
+            throw new RunException("数据库中已存在该记录!");
         }
 
         baseUserEntity.setCreatedAt(new Date());
@@ -112,12 +112,12 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserDao, BaseUserEntity
 
         if (StringUtils.isNotBlank(editUserVo.getNewPassword())) {
             if (StringUtils.isBlank(editUserVo.getOldPassword())) {
-                throw new RunException(5007, "旧密码不能为空");
+                throw new RunException(400, "旧密码不能为空");
             } else {
                 BaseUserEntity user = this.getById(editUserVo.getId());
                 String oldPassword = new Sha256Hash(editUserVo.getOldPassword(), user.getSalt()).toHex();
                 if (!oldPassword.equals(user.getPassword())) {
-                    throw new RunException(5007, "旧密码不正确");
+                    throw new RunException(4000, "旧密码不正确");
                 }
                 String newPassword = new Sha256Hash(editUserVo.getNewPassword(), user.getSalt()).toHex();
                 baseUserEntity.setPassword(newPassword);
@@ -152,7 +152,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserDao, BaseUserEntity
         }
         // 判断是否越权
         if (!roleIds.containsAll(baseUserEntity.getRoleIds())) {
-            throw new RunException(5207, "该用户权限已超出你的权限!");
+            throw new RunException(4000, "该用户权限已超出你的权限!");
         }
 
     }

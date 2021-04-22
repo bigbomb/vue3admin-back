@@ -66,7 +66,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
         if (StringUtils.isBlank(token)) {
             HttpServletResponse httpServletResponse = getProcessedResponse(servletResponse);
 
-            String json = JSONUtils.toJSONString(R.error(5001));
+            String json = JSONUtils.toJSONString(R.error(401, "无效的授权令牌!"));
             httpServletResponse.getWriter().print(json);
             return false;
         }

@@ -46,7 +46,7 @@ public class RunExceptionHandler {
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public R handlerNoFoundException(Exception e) {
 		logger.error(e.getMessage(), e);
-		return R.error(404);
+		return R.error(404, "路径不存在!");
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class RunExceptionHandler {
 	@ExceptionHandler(DuplicateKeyException.class)
 	public R handleDuplicateKeyException(DuplicateKeyException e){
 		logger.error(e.getMessage(), e);
-		return R.error(5003);
+		return R.error("数据库中已存在该记录");
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class RunExceptionHandler {
 	@ExceptionHandler(AuthorizationException.class)
 	public R handleAuthorizationException(AuthorizationException e){
 		logger.error(e.getMessage(), e);
-		return R.error(5002);
+		return R.error(401, "没有权限!");
 	}
 
 	/**
@@ -89,16 +89,15 @@ public class RunExceptionHandler {
 	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public R handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-		Constant.StatusCode statusCode = Constant.StatusCode.getStatusCode(5007);
-		logger.error(statusCode.getMessage() + e.getParameter().getMethod() + e.getBindingResult().getFieldErrors());
-		String message = statusCode.getMessage();
+		String message = Constant.VERIFICATION_ERROR;
+		logger.error(message + e.getParameter().getMethod() + e.getBindingResult().getFieldErrors());
 		String comma = "";
 		for (FieldError error : e.getBindingResult().getFieldErrors()) {
 			message += comma;
 			message += error.getField() + "-" +error.getDefaultMessage();
 			comma = ",";
 		}
-		return R.error(statusCode.getCode(), message);
+		return R.error(400, message);
 	}
 
 	/**
@@ -109,8 +108,7 @@ public class RunExceptionHandler {
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	public R handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e){
 		logger.error(e.getMessage(), e);
-		Constant.StatusCode statusCode = Constant.StatusCode.getStatusCode(5008);
-		return R.error(statusCode.getCode(), statusCode.getMessage() + e.getMethod());
+		return R.error(405, Constant.METHOD_ERROR + e.getMethod());
 	}
 
 }

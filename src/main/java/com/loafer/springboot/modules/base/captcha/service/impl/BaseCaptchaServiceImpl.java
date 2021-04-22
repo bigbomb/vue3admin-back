@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.code.kaptcha.Producer;
 import com.loafer.springboot.common.exception.RunException;
+import com.loafer.springboot.common.utils.Constant;
 import com.loafer.springboot.common.utils.DateUtils;
 import com.loafer.springboot.modules.base.captcha.dao.BaseCaptchaDao;
 import com.loafer.springboot.modules.base.captcha.entity.BaseCaptchaEntity;
@@ -33,7 +34,7 @@ public class BaseCaptchaServiceImpl extends ServiceImpl<BaseCaptchaDao, BaseCapt
     @Override
     public BufferedImage createCaptcha(String uuid) {
         if (StringUtils.isBlank(uuid)) {
-            throw new RunException(5201);
+            throw new RunException(400, Constant.VERIFICATION_ERROR);
         }
         String code = producer.createText();
         BaseCaptchaEntity baseCaptchaEntity = new BaseCaptchaEntity();

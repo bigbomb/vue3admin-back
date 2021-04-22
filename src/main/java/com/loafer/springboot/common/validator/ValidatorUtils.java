@@ -28,15 +28,14 @@ public class ValidatorUtils {
     public static <T> void validated(T object, Class<?>... groups) throws RunException {
         Set<ConstraintViolation<Object>> constraintViolations = validator.validate(object, groups);
         if (!constraintViolations.isEmpty()) {
-            Constant.StatusCode statusCode = Constant.StatusCode.getStatusCode(5007);
             StringBuilder message = new StringBuilder();
-            message.append(statusCode.getMessage());
+            message.append(Constant.VERIFICATION_ERROR);
             String comma = "";
             for (ConstraintViolation<Object> constraint:  constraintViolations) {
                 message.append(comma).append(constraint.getPropertyPath()+ "-" + constraint.getMessage());
                 comma = ",";
             }
-            throw new RunException(5007, message.toString());
+            throw new RunException(400, message.toString());
         }
     }
 }
