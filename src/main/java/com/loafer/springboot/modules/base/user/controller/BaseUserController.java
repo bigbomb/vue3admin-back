@@ -7,9 +7,11 @@ import com.loafer.springboot.common.utils.R;
 import com.loafer.springboot.common.validator.group.Create;
 import com.loafer.springboot.common.validator.group.Update;
 import com.loafer.springboot.modules.base.AbstractController;
+import com.loafer.springboot.modules.base.menu.entity.BaseMenuEntity;
 import com.loafer.springboot.modules.base.user.entity.BaseUserEntity;
 import com.loafer.springboot.modules.base.user.service.BaseUserService;
 import com.loafer.springboot.modules.base.user.vo.EditUserVo;
+import com.loafer.springboot.modules.base.vo.StatusVo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -197,7 +199,8 @@ public class BaseUserController extends AbstractController {
      *          nickname: '', // 昵称
      *          mobile: '', // 手机
      *          email: '', // 邮箱
-     *          avatar: '' // 头像
+     *          avatar: '', // 头像
+     *          role_ids: [] // 角色ID
      * }
      * @apiSuccessExample 响应结果示例
      * {
@@ -268,6 +271,38 @@ public class BaseUserController extends AbstractController {
     @RequiresPermissions("base:user:delete")
     public R delete(@RequestBody Long[] ids) {
         baseUserService.removeByIds(Arrays.asList(ids));
+        return R.success();
+    }
+
+    /**
+     * 是否支持标签栏多开
+     *
+     * @api {POST} /base/user/status status
+     * @apiDescription 是否显示
+     * @apiVersion 1.0.0
+     * @apiGroup User
+     * @apiName status
+     * @apiParamExample 请求参数示例
+     * {
+     *     key: '', // ID
+     *     value: '' // 0：是 1：否
+     * }
+     * @apiSuccessExample 响应结果示例
+     * {
+     *     code: 0,
+     *     message: '成功！',
+     *     status: 'success'
+     * }
+     */
+    @RequestMapping("/status")
+    @RequiresPermissions("base:user:status")
+    public R multiple(@RequestBody @Validated StatusVo<Long, Integer> StatusVo){
+        BaseUserEntity baseUserEntity = new BaseUserEntity();
+        baseUserEntity.setId(StatusVo.getKey());
+        baseUserEntity.setStatus(StatusVo.getValue());
+
+        baseUserService.updateById(baseUserEntity);
+
         return R.success();
     }
 }

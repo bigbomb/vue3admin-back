@@ -14,15 +14,16 @@
         <result property="email" column="email"/>
         <result property="avatar" column="avatar"/>
         <result property="status" column="status"/>
+        <result property="createdAt" column="created_at"/>
         <collection property="roles" javaType="List" ofType="com.loafer.springboot.modules.base.role.dto.BaseRoleDto">
             <id property="id" column="role_id"></id>
             <result property="name" column="role_name"/>
         </collection>
     </resultMap>
 
-<!--    IPage<BaseUserDto> queryAllPage(Page<?> page);-->
+<!--    IPage<BaseUserDto> queryAllPage(Page<?> page, @Param("username") String username, @Param("nickname") String nickname);-->
     <select id="queryAllPage" resultMap="userRoleMap">
-        select u.id, u.username, u.nickname, u.mobile, u.email, u.avatar, u.status,
+        select u.id, u.username, u.nickname, u.mobile, u.email, u.avatar, u.status, u.created_at,
                r.id as role_id, r.name as role_name
         from base_user u
         left join base_user__role ur
@@ -31,11 +32,17 @@
             on r.id = ur.role_id
                    and r.deleted = 0
         where u.deleted = 0
+        <if test="username != null and username != ''">
+            and u.username like "%${username}%"
+        </if>
+        <if test="nickname != null and nickname != ''">
+            and u.nickname like "%${nickname}%"
+        </if>
     </select>
 
-<!--    IPage<BaseUserDto> queryByCreatorPage(Page<?> page, @Param("Creator") Long creator);-->
+<!--    IPage<BaseUserDto> queryByCreatorPage(Page<?> page, @Param("Creator") Long creator, @Param("username") String username, @Param("nickname") String nickname);-->
     <select id="queryByCreatorPage" resultMap="userRoleMap">
-        select u.id, u.username, u.nickname, u.mobile, u.email, u.avatar, u.status,
+        select u.id, u.username, u.nickname, u.mobile, u.email, u.avatar, u.status, u.created_at,
                r.id as role_id, r.name as role_name
         from base_user u
         left join base_user__role ur

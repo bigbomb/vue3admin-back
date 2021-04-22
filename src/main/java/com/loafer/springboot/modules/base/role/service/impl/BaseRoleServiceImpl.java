@@ -39,12 +39,13 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleDao, BaseRoleEntity
     public RPage<BaseRoleDto> queryPage(Map<String, Object> params) {
         Page<BaseRoleDto> page = new Query<BaseRoleDto>().getPage(params);
         Long userId = (Long)params.get("userId");
+        String name = (String)params.get("name");
         RPage<BaseRoleDto> rPage;
         boolean isSuper = Common.isSuper(userId);
         if (isSuper) {
-            rPage = new RPage<>(baseMapper.queryPage(page, null, null));
+            rPage = new RPage<>(baseMapper.queryPage(page, null, name, null));
         } else {
-            rPage = new RPage<>(baseMapper.queryPage(page, userId, 1));
+            rPage = new RPage<>(baseMapper.queryPage(page, userId, name, 1));
         }
         return rPage;
     }

@@ -14,13 +14,16 @@
         </collection>
     </resultMap>
 
-<!--    IPage<BaseRoleDto> queryPage(Page<BaseRoleDto> page, @Param("userId") Long userId, @Param("isDisplay") Integer isDisplay);-->
+<!--    IPage<BaseRoleDto> queryPage(Page<BaseRoleDto> page, @Param("userId") Long userId, @Param("name") String name, @Param("isDisplay") Integer isDisplay);-->
     <select id="queryPage" resultType="com.loafer.springboot.modules.base.role.dto.BaseRoleDto">
         select id, `name`, remark, creator, created_at
         from base_role
         where deleted = 0
         <if test="userId != null">
             and creator = #{userId}
+        </if>
+        <if test="name != null and name != ''">
+            and `name` like "%${name}%"
         </if>
         <if test="isDisplay != null">
             and is_display = #{isDisplay}

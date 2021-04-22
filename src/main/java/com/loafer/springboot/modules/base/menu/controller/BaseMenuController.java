@@ -320,10 +320,10 @@ public class BaseMenuController extends AbstractController {
      */
     @RequestMapping("/display")
     @RequiresPermissions("base:menu:display")
-    public R display(@RequestBody @Validated StatusVo<Long, Integer> menuStatusVo){
+    public R display(@RequestBody @Validated StatusVo<Long, Integer> statusVo){
         BaseMenuEntity baseMenuEntity = new BaseMenuEntity();
-        baseMenuEntity.setId(menuStatusVo.getKey());
-        baseMenuEntity.setIsDisplay(menuStatusVo.getValue());
+        baseMenuEntity.setId(statusVo.getKey());
+        baseMenuEntity.setIsDisplay(statusVo.getValue());
 
         baseMenuService.updateById(baseMenuEntity);
 
@@ -352,10 +352,10 @@ public class BaseMenuController extends AbstractController {
      */
     @RequestMapping("/alive")
     @RequiresPermissions("base:menu:alive")
-    public R alive(@RequestBody @Validated StatusVo<Long, Integer> menuStatusVo){
+    public R alive(@RequestBody @Validated StatusVo<Long, Integer> statusVo){
         BaseMenuEntity baseMenuEntity = new BaseMenuEntity();
-        baseMenuEntity.setId(menuStatusVo.getKey());
-        baseMenuEntity.setIsAlive(menuStatusVo.getValue());
+        baseMenuEntity.setId(statusVo.getKey());
+        baseMenuEntity.setIsAlive(statusVo.getValue());
 
         baseMenuService.updateById(baseMenuEntity);
 
@@ -384,10 +384,10 @@ public class BaseMenuController extends AbstractController {
      */
     @RequestMapping("/tab")
     @RequiresPermissions("base:menu:tab")
-    public R tab(@RequestBody @Validated StatusVo<Long, Integer> menuStatusVo){
+    public R tab(@RequestBody @Validated StatusVo<Long, Integer> statusVo){
         BaseMenuEntity baseMenuEntity = new BaseMenuEntity();
-        baseMenuEntity.setId(menuStatusVo.getKey());
-        baseMenuEntity.setIsTab(menuStatusVo.getValue());
+        baseMenuEntity.setId(statusVo.getKey());
+        baseMenuEntity.setIsTab(statusVo.getValue());
 
         baseMenuService.updateById(baseMenuEntity);
 
@@ -416,10 +416,10 @@ public class BaseMenuController extends AbstractController {
      */
     @RequestMapping("/multiple")
     @RequiresPermissions("base:menu:multiple")
-    public R multiple(@RequestBody @Validated StatusVo<Long, Integer> menuStatusVo){
+    public R multiple(@RequestBody @Validated StatusVo<Long, Integer> statusVo){
         BaseMenuEntity baseMenuEntity = new BaseMenuEntity();
-        baseMenuEntity.setId(menuStatusVo.getKey());
-        baseMenuEntity.setIsMultiple(menuStatusVo.getValue());
+        baseMenuEntity.setId(statusVo.getKey());
+        baseMenuEntity.setIsMultiple(statusVo.getValue());
 
         baseMenuService.updateById(baseMenuEntity);
 

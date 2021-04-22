@@ -43,6 +43,11 @@ public class BaseLoginServiceImpl implements BaseLoginService {
                 new QueryWrapper<BaseUserEntity>()
                         .eq("username", loginVo.getUsername());
         BaseUserEntity user = baseUserService.getOne(wrapper);
+
+        if (user.getStatus() == 0) {
+            throw new RunException(5006);
+        }
+
         if (user == null || !user.getPassword().equals(new Sha256Hash(loginVo.getPassword(), user.getSalt()).toHex())) {
             throw new RunException(5203);
         }

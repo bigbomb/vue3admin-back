@@ -1,5 +1,6 @@
 package com.loafer.springboot.modules.base.user.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.loafer.springboot.common.exception.RunException;
@@ -10,6 +11,7 @@ import com.loafer.springboot.modules.base.role.dto.BaseRoleDto;
 import com.loafer.springboot.modules.base.user.dao.BaseUserDao;
 import com.loafer.springboot.modules.base.user.dto.BaseUserDto;
 import com.loafer.springboot.modules.base.user.entity.BaseUserEntity;
+import com.loafer.springboot.modules.base.user.entity.BaseUserRoleEntity;
 import com.loafer.springboot.modules.base.user.service.BaseUserRoleService;
 import com.loafer.springboot.modules.base.user.service.BaseUserService;
 import com.loafer.springboot.modules.base.user.vo.EditUserVo;
@@ -35,12 +37,14 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserDao, BaseUserEntity
     public RPage<BaseUserDto> queryPage(Map<String, Object> params) {
         Page<BaseUserDto> page = new Query<BaseUserDto>().getPage(params);
         long userId = (long)params.get("userId");
+        String username = (String)params.get("username");
+        String nickname = (String)params.get("nickname");
         boolean isSuper = Common.isSuper(userId);
         RPage<BaseUserDto> rPage;
         if (isSuper) {
-            rPage = new RPage<>(baseMapper.queryAllPage(page));
+            rPage = new RPage<>(baseMapper.queryAllPage(page, username, nickname));
         } else {
-            rPage = new RPage<>(baseMapper.queryByCreatorPage(page, userId));
+            rPage = new RPage<>(baseMapper.queryByCreatorPage(page, userId, username, nickname));
         }
         return rPage;
     }
@@ -56,8 +60,16 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserDao, BaseUserEntity
     }
 
     @Override
+    @Transactional
     public void create(BaseUserEntity baseUserEntity, BaseUserDto baseUserDto) {
         validatedRole(baseUserEntity, baseUserDto);
+
+        QueryWrapper<BaseUserEntity> wrapper = new QueryWrapper<BaseUserEntity>()
+                .eq("username", baseUserEntity.getUsername());
+        int count = this.count(wrapper);
+        if (count != 0) {
+            throw new RunException(5208);
+        }
 
         baseUserEntity.setCreatedAt(new Date());
         // 加密
@@ -68,10 +80,11 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserDao, BaseUserEntity
 
         this.save(baseUserEntity);
 
-        baseUserRoleService.createOrUpdate(baseUserEntity.getCreator(), baseUserEntity.getRoleIds());
+        baseUserRoleService.createOrUpdate(baseUserEntity.getId(), baseUserEntity.getRoleIds());
     }
 
     @Override
+    @Transactional
     public void update(BaseUserEntity baseUserEntity, BaseUserDto baseUserDto) {
         validatedRole(baseUserEntity, baseUserDto);
 
@@ -89,7 +102,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserDao, BaseUserEntity
 
         this.updateById(baseUserEntity);
 
-        baseUserRoleService.createOrUpdate(baseUserEntity.getCreator(), baseUserEntity.getRoleIds());
+        baseUserRoleService.createOrUpdate(baseUserEntity.getId(), baseUserEntity.getRoleIds());
     }
 
     @Override

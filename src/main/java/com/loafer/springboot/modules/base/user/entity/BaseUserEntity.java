@@ -94,6 +94,7 @@ public class BaseUserEntity implements Serializable {
     /**
      * 角色ID
      */
+    @JsonProperty("role_ids")
     @TableField(exist = false)
     private List<Long> roleIds;
 

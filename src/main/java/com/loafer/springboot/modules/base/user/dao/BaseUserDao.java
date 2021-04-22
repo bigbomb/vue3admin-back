@@ -18,9 +18,9 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface BaseUserDao extends BaseMapper<BaseUserEntity> {
 
-    IPage<BaseUserDto> queryAllPage(Page<BaseUserDto> page);
+    IPage<BaseUserDto> queryAllPage(Page<BaseUserDto> page, @Param("username") String username, @Param("nickname") String nickname);
 
-    IPage<BaseUserDto> queryByCreatorPage(Page<BaseUserDto> page, @Param("Creator") Long creator);
+    IPage<BaseUserDto> queryByCreatorPage(Page<BaseUserDto> page, @Param("Creator") Long creator, @Param("username") String username, @Param("nickname") String nickname);
 
     BaseUserDto queryById (@Param("id") Long id);
 

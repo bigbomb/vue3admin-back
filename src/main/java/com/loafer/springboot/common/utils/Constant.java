@@ -67,6 +67,7 @@ public class Constant {
         UNABLE_VIEW_ERROR(5205, "无法查看该记录信息!"),
         UNABLE_DELETE_ERROR(5206, "无法删除该记录信息!"),
         ULTRA_VIRES_ERROR(5207, "您已越权,无法操作该记录信息!"),
+        ALREADY_EXISTS_ERROR(5208, "已存在该记录!"),
 
         NOT_FOUND_ERROR(404, "路径不存在，请检查路径是否正确!"),
         SUCCESS(0, "成功!"),

@@ -30,6 +30,7 @@ public interface BaseRoleDao extends BaseMapper<BaseRoleEntity> {
      */
     IPage<BaseRoleDto> queryPage(Page<BaseRoleDto> page,
                                  @Param("userId") Long userId,
+                                 @Param("name") String name,
                                  @Param("isDisplay") Integer isDisplay);
 
     /**
