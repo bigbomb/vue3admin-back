@@ -14,10 +14,9 @@ public class R extends HashMap<String, Object> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public R() {
-        Constant.StatusCode statusCode = Constant.StatusCode.SUCCESS;
-        put("status", "success");
-        put("code", statusCode.getCode());
-        put("message", statusCode.getMessage());
+        put("status", Constant.SUCCESS_STATUS);
+        put("code", Constant.SUCCESS_CODE);
+        put("message", Constant.SUCCESS_MESSAGE);
     }
 
     public static R success() {
@@ -35,29 +34,32 @@ public class R extends HashMap<String, Object> implements Serializable {
     }
 
     public static R error() {
-        Constant.StatusCode statusCode = Constant.StatusCode.ERROR;
         R r = new R();
-        r.put("status", "error");
-        r.put("code", statusCode.getCode());
-        r.put("message", statusCode.getMessage());
+        r.put("status", Constant.ERROR_STATUS);
+        r.put("code", Constant.ERROR_CODE);
+        r.put("message", Constant.ERROR_MESSAGE);
         return r;
     }
 
     public static R error(Integer code) {
-        Constant.StatusCode statusCode = Constant.StatusCode.getStatusCode(code);
-        if (statusCode == null) {
-            statusCode = Constant.StatusCode.ERROR;
-        }
         R r = new R();
-        r.put("status", "error");
-        r.put("code", statusCode.getCode());
-        r.put("message", statusCode.getMessage());
+        r.put("status", Constant.ERROR_STATUS);
+        r.put("code", code);
+        r.put("message", Constant.ERROR_MESSAGE);
+        return r;
+    }
+
+    public static R error(String message) {
+        R r = new R();
+        r.put("status", Constant.ERROR_STATUS);
+        r.put("code", Constant.ERROR_CODE);
+        r.put("message", message);
         return r;
     }
 
     public static R error(Integer code, String message) {
         R r = new R();
-        r.put("status", "error");
+        r.put("status", Constant.ERROR_STATUS);
         r.put("code", code);
         r.put("message", message);
         return r;

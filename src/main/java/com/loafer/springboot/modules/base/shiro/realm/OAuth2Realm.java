@@ -46,14 +46,14 @@ public class OAuth2Realm extends AuthorizingRealm {
         BaseTokenEntity baseTokenEntity = baseTokenService.queryByToken(token);
         if (baseTokenEntity == null || baseTokenEntity.getExpiredAt().getTime() < new Date().getTime()) {
             // 凭证不正确异常
-            String message = JSONUtils.toJSONString(R.error(5005));
+            String message = JSONUtils.toJSONString(R.error(401, "凭证已过期，请重新登录!"));
             throw new IncorrectCredentialsException(message);
         }
 
         BaseUserDto baseUserDto = baseUserService.queryById(baseTokenEntity.getUserId());
         if (baseUserDto == null || baseUserDto.getStatus() == 0) {
             // 账户锁定异常
-            String message = JSONUtils.toJSONString(R.error(5006));
+            String message = JSONUtils.toJSONString(R.error(4000, "账户已被冻结，请联系管理员"));
             throw new LockedAccountException(message);
         }
         SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(baseUserDto, token, getName());

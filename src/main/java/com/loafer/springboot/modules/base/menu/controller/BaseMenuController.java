@@ -291,7 +291,7 @@ public class BaseMenuController extends AbstractController {
         List<BaseMenuDto> list = baseMenuService.queryAllMenuByParentId(id);
 
         if (list.size() > 0) {
-            return R.error(5206, "请先删除子菜单或者按钮!");
+            return R.error(4000, "请先删除子菜单或者按钮!");
         }
 
         baseMenuService.removeById(id);
@@ -462,14 +462,14 @@ public class BaseMenuController extends AbstractController {
     private void validated(BaseMenuEntity baseMenuEntity) {
         if (baseMenuEntity.getType() == Constant.MenuType.MENU.getValue()) {
             if (StringUtils.isBlank(baseMenuEntity.getUrl())) {
-                throw new RunException(5007, "菜单URL不能为空");
+                throw new RunException(4000, "菜单URL不能为空");
             }
         }
 
         // 目录
         if (baseMenuEntity.getType() == Constant.MenuType.CATALOG.getValue()) {
             if (baseMenuEntity.getParentId() != 0) {
-                throw new RunException(5007, "上级菜单只能为目录类型");
+                throw new RunException(4000, "上级菜单只能为目录类型");
             }
         }
         // 菜单
@@ -477,19 +477,19 @@ public class BaseMenuController extends AbstractController {
             if (baseMenuEntity.getParentId() != 0) {
                 int parentType = baseMenuService.queryById(baseMenuEntity.getParentId()).getType();
                 if (parentType != Constant.MenuType.CATALOG.getValue()) {
-                    throw new RunException(5007, "上级菜单只能为目录类型");
+                    throw new RunException(4000, "上级菜单只能为目录类型");
                 }
             }
         }
         // 按钮
         if (baseMenuEntity.getType() == Constant.MenuType.BUTTON.getValue()) {
             if (baseMenuEntity.getParentId() == 0) {
-                throw new RunException(5007, "上级菜单只能为目录类型");
+                throw new RunException(4000, "上级菜单只能为目录类型");
             }
             if (baseMenuEntity.getParentId() != 0) {
                 int parentType = baseMenuService.queryById(baseMenuEntity.getParentId()).getType();
                 if (parentType != Constant.MenuType.MENU.getValue()) {
-                    throw new RunException(5007, "上级菜单只能为菜单类型");
+                    throw new RunException(4000, "上级菜单只能为菜单类型");
                 }
             }
         }

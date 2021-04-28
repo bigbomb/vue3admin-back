@@ -36,7 +36,7 @@ public class BaseLoginServiceImpl implements BaseLoginService {
     public BaseTokenEntity login(LoginVo loginVo) {
         boolean result = baseCaptchaService.validateCode(loginVo.getUuid(), loginVo.getCode());
         if (!result) {
-            throw new RunException(5202);
+            throw new RunException(4000, "验证码不正确!");
         }
 
         QueryWrapper<BaseUserEntity> wrapper =
@@ -45,11 +45,11 @@ public class BaseLoginServiceImpl implements BaseLoginService {
         BaseUserEntity user = baseUserService.getOne(wrapper);
 
         if (user.getStatus() == 0) {
-            throw new RunException(5006);
+            throw new RunException(4000, "账户已被冻结!");
         }
 
         if (user == null || !user.getPassword().equals(new Sha256Hash(loginVo.getPassword(), user.getSalt()).toHex())) {
-            throw new RunException(5203);
+            throw new RunException(4000, "帐号或密码不正确");
         }
 
         return baseTokenService.createToken(user.getId());

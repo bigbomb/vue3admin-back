@@ -118,7 +118,7 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleDao, BaseRoleEntity
         List<Long> menuIds = baseRoleMenuService.queryMenuIdByRoleId(roleIds);
         // 判断是否越权
         if (!menuIds.containsAll(baseRoleEntity.getMenuIds())) {
-            throw new RunException(5207, "该角色权限已超出你的权限!");
+            throw new RunException(4000, "该角色权限已超出你的权限!");
         }
     }
 

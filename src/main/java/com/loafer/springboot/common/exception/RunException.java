@@ -14,29 +14,37 @@ import java.io.Serializable;
 public class RunException extends RuntimeException implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private int code;
-    private String message;
+	private int code = Constant.ERROR_CODE;
+    private String message = Constant.ERROR_MESSAGE;
 
-    public RunException(int code) {
+	public RunException(int code) {
 		super();
-		Constant.StatusCode statusCode = Constant.StatusCode.getStatusCode(code);
-		if (statusCode != null) {
-			this.code = code;
-			this.message = statusCode.getMessage();
-		}
+		this.code = code;
 	}
 
-	public RunException(int code, Throwable e) {
+	public RunException(int code,  Throwable e) {
 		super(e);
-		Constant.StatusCode statusCode = Constant.StatusCode.getStatusCode(code);
-		if (statusCode != null) {
-			this.code = code;
-			this.message = statusCode.getMessage();
-		}
+		this.code = code;
+	}
+
+	public RunException(String message) {
+		super();
+		this.message = message;
+	}
+
+	public RunException(String message,  Throwable e) {
+		super(e);
+		this.message = message;
 	}
 
 	public RunException(int code, String message) {
 		super();
+		this.code = code;
+		this.message = message;
+	}
+
+	public RunException(int code, String message, Throwable e) {
+		super(e);
 		this.code = code;
 		this.message = message;
 	}
@@ -49,7 +57,6 @@ public class RunException extends RuntimeException implements Serializable {
 		this.code = code;
 	}
 
-	@Override
 	public String getMessage() {
 		return message;
 	}

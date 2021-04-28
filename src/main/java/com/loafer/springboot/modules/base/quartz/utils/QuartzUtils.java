@@ -46,7 +46,7 @@ public class QuartzUtils {
         try {
             return (CronTrigger) scheduler.getTrigger(getTriggerKey(taskId));
         } catch (SchedulerException e) {
-            throw new RunException(5107, e);
+            throw new RunException("获取定时任务CronTrigger出现异常!", e);
         }
     }
 
@@ -83,7 +83,7 @@ public class QuartzUtils {
             }
             return startTime;
         } catch (SchedulerException e) {
-            throw new RunException(5100, e);
+            throw new RunException("创建定时任务失败!", e);
         }
     }
 
@@ -116,7 +116,7 @@ public class QuartzUtils {
             }
             return updateTime;
         } catch (SchedulerException e) {
-            throw new RunException(5101, e);
+            throw new RunException("更新定时任务失败!", e);
         }
     }
 
@@ -132,7 +132,7 @@ public class QuartzUtils {
 
             scheduler.triggerJob(getJobKey(taskEntity.getId()), dataMap);
         } catch (SchedulerException e) {
-            throw new RunException(5102, e);
+            throw new RunException("立即执行定时任务失败!", e);
         }
     }
 
@@ -144,7 +144,7 @@ public class QuartzUtils {
         try {
             scheduler.pauseJob(getJobKey(jobId));
         } catch (SchedulerException e) {
-            throw new RunException(5103, e);
+            throw new RunException("暂停定时任务失败!", e);
         }
     }
 
@@ -156,7 +156,7 @@ public class QuartzUtils {
         try {
             scheduler.resumeJob(getJobKey(taskId));
         } catch (SchedulerException e) {
-            throw new RunException(5104, e);
+            throw new RunException("恢复定时任务失败!", e);
         }
     }
 
@@ -173,7 +173,7 @@ public class QuartzUtils {
             // 3.删除任务
             scheduler.deleteJob(getJobKey(taskId));
         } catch (SchedulerException e) {
-            throw new RunException(5105, e);
+            throw new RunException("删除定时任务失败!", e);
         }
     }
 
@@ -186,7 +186,7 @@ public class QuartzUtils {
         try {
             return scheduler.checkExists(getJobKey(taskId));
         } catch (SchedulerException e) {
-            throw new RunException(5106, e);
+            throw new RunException("验证定时任务是否存在失败!", e);
         }
     }
 
