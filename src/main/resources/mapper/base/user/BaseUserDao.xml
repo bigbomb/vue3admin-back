@@ -40,7 +40,7 @@
         </if>
     </select>
 
-<!--    IPage<BaseUserDto> queryByCreatorPage(Page<?> page, @Param("Creator") Long creator, @Param("username") String username, @Param("nickname") String nickname);-->
+<!--    IPage<BaseUserDto> queryByCreatorPage(Page<?> page, @Param("creator") Long creator, @Param("username") String username, @Param("nickname") String nickname);-->
     <select id="queryByCreatorPage" resultMap="userRoleMap">
         select u.id, u.username, u.nickname, u.mobile, u.email, u.avatar, u.status, u.created_at,
                r.id as role_id, r.name as role_name
