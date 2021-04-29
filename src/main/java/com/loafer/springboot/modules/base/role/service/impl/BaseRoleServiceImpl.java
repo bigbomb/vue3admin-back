@@ -53,12 +53,7 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleDao, BaseRoleEntity
     @Override
     public BaseRoleDto queryById(Long id, Long userId) {
         BaseRoleDto baseRoleDto = baseMapper.queryById(id);
-        boolean isSuper = Common.isSuper(userId);
-        if (isSuper) {
-            return baseRoleDto;
-        } else {
-            return userId.equals(baseRoleDto.getCreator()) ? baseRoleDto : null;
-        }
+        return baseRoleDto;
     }
 
     @Override
