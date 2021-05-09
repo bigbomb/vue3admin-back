@@ -28,7 +28,6 @@ public class BaseRoleMenuServiceImpl extends ServiceImpl<BaseRoleMenuDao, BaseRo
     }
 
     @Override
-    @Transactional
     public void createOrUpdate(Long roleId, List<Long> menuIds) {
         QueryWrapper<BaseRoleMenuEntity> wrapper = new QueryWrapper<BaseRoleMenuEntity>()
                 .eq("role_id", roleId);

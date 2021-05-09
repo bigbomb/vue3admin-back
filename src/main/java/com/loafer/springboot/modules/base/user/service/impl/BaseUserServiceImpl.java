@@ -8,7 +8,9 @@ import com.loafer.springboot.common.utils.Common;
 import com.loafer.springboot.common.utils.Query;
 import com.loafer.springboot.common.utils.RPage;
 import com.loafer.springboot.modules.base.role.dto.BaseRoleDto;
+import com.loafer.springboot.modules.base.role.entity.BaseRoleMenuEntity;
 import com.loafer.springboot.modules.base.user.dao.BaseUserDao;
+import com.loafer.springboot.modules.base.user.dao.BaseUserRoleDao;
 import com.loafer.springboot.modules.base.user.dto.BaseUserDto;
 import com.loafer.springboot.modules.base.user.entity.BaseUserEntity;
 import com.loafer.springboot.modules.base.user.entity.BaseUserRoleEntity;
@@ -32,6 +34,8 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserDao, BaseUserEntity
 
     @Resource
     private BaseUserRoleService baseUserRoleService;
+    @Resource
+    private BaseUserRoleDao baseUserRoleDao;
 
     @Override
     public RPage<BaseUserDto> queryPage(Map<String, Object> params) {
@@ -80,6 +84,10 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserDao, BaseUserEntity
 
         this.save(baseUserEntity);
 
+//        List<BaseUserRoleEntity> baseUserRoleEntities = getBaseUserRoles(baseUserEntity.getId(), baseUserEntity.getRoleIds());
+//        for (BaseUserRoleEntity userRoleEntity : baseUserRoleEntities) {
+//            baseUserRoleDao.insert(userRoleEntity);
+//        }
         baseUserRoleService.createOrUpdate(baseUserEntity.getId(), baseUserEntity.getRoleIds());
     }
 
@@ -102,7 +110,11 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserDao, BaseUserEntity
 
         this.updateById(baseUserEntity);
 
-        baseUserRoleService.createOrUpdate(baseUserEntity.getId(), baseUserEntity.getRoleIds());
+        List<BaseUserRoleEntity> baseUserRoleEntities = getBaseUserRoles(baseUserEntity.getId(), baseUserEntity.getRoleIds());
+        for (BaseUserRoleEntity userRoleEntity : baseUserRoleEntities) {
+            baseUserRoleDao.insert(userRoleEntity);
+        }
+//        baseUserRoleService.createOrUpdate(baseUserEntity.getId(), baseUserEntity.getRoleIds());
     }
 
     @Override
@@ -155,6 +167,33 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserDao, BaseUserEntity
             throw new RunException(4000, "该用户权限已超出你的权限!");
         }
 
+    }
+
+    /**
+     * 获取用户角色关联列表
+     * @param userId
+     * @param roleIds
+     * @return
+     */
+    private List<BaseUserRoleEntity> getBaseUserRoles(Long userId, List<Long> roleIds) {
+        QueryWrapper<BaseUserRoleEntity> wrapper = new QueryWrapper<BaseUserRoleEntity>()
+                .eq("user_id", userId);
+        baseUserRoleDao.delete(wrapper);
+
+        List<BaseUserRoleEntity> baseUserRoleEntities = new ArrayList<>();
+
+        if (roleIds.size() == 0) {
+            return baseUserRoleEntities;
+        }
+
+        for (Long roleId : roleIds) {
+            BaseUserRoleEntity userRole = new BaseUserRoleEntity();
+            userRole.setUserId(userId);
+            userRole.setRoleId(roleId);
+            baseUserRoleEntities.add(userRole);
+        }
+
+        return baseUserRoleEntities;
     }
 
 }

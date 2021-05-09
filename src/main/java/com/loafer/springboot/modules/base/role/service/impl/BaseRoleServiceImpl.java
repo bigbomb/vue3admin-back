@@ -1,5 +1,6 @@
 package com.loafer.springboot.modules.base.role.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.loafer.springboot.common.exception.RunException;
@@ -7,9 +8,11 @@ import com.loafer.springboot.common.utils.Common;
 import com.loafer.springboot.common.utils.Query;
 import com.loafer.springboot.common.utils.RPage;
 import com.loafer.springboot.modules.base.role.dao.BaseRoleDao;
+import com.loafer.springboot.modules.base.role.dao.BaseRoleMenuDao;
 import com.loafer.springboot.modules.base.role.dto.BaseRoleDto;
 import com.loafer.springboot.modules.base.role.dto.BaseRoleSelectDto;
 import com.loafer.springboot.modules.base.role.entity.BaseRoleEntity;
+import com.loafer.springboot.modules.base.role.entity.BaseRoleMenuEntity;
 import com.loafer.springboot.modules.base.role.service.BaseRoleMenuService;
 import com.loafer.springboot.modules.base.role.service.BaseRoleService;
 import com.loafer.springboot.modules.base.user.dto.BaseUserDto;
@@ -34,6 +37,8 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleDao, BaseRoleEntity
 
     @Resource
     private BaseRoleMenuService baseRoleMenuService;
+    @Resource
+    private BaseRoleMenuDao baseRoleMenuDao;
 
     @Override
     public RPage<BaseRoleDto> queryPage(Map<String, Object> params) {

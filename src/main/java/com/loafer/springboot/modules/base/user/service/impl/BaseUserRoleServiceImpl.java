@@ -17,7 +17,6 @@ import java.util.List;
 public class BaseUserRoleServiceImpl extends ServiceImpl<BaseUserRoleDao, BaseUserRoleEntity> implements BaseUserRoleService {
 
     @Override
-    @Transactional
     public void createOrUpdate(Long userId, List<Long> roleIds) {
         QueryWrapper<BaseUserRoleEntity> wrapper = new QueryWrapper<BaseUserRoleEntity>()
                 .eq("user_id", userId);
