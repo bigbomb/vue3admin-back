@@ -2,12 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.loafer.springboot.modules.base.role.dao.BaseRoleMenuDao">
-    
-    <resultMap type="com.loafer.springboot.modules.base.role.entity.BaseRoleMenuEntity" id="baseRoleMenuMap">
-        <result property="id" column="id"/>
-        <result property="roleId" column="role_id"/>
-        <result property="menuId" column="menu_id"/>
-    </resultMap>
 
 <!--    List<Long> queryMenuIdByRoleId(@Param("roleIds") List<Long> roleIds);-->
     <select id="queryMenuIdByRoleId" resultType="long">

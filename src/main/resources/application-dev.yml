@@ -3,7 +3,7 @@ project:
   name: springboot
 
 service:
-  port: 8887
+  port: 8888
   context-path: /loafer
 
 database:

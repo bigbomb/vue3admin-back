@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.loafer.springboot.modules.base.quartz.dao.BaseScheduleTaskDao">
+
+<!--    void updateBatch(@Param("ids") Long[] ids, @Param("status") Integer status);-->
+    <update id="updateBatch">
+        update base_schedule_task set status = #{status} where job_id in
+        <foreach item="id" collection="ids"  open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>

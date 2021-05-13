@@ -4,10 +4,14 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.loafer.springboot.common.validator.group.Create;
+import com.loafer.springboot.common.validator.group.Update;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -30,11 +34,13 @@ public class BaseScheduleTaskEntity implements Serializable {
      */
     public static final String TASK_PARAM_KEY = "TASK_PARAM_KEY";
 
+    @NotNull(message = "ID不能为null", groups = Update.class)
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     /**
      * spring bean名称
      */
+    @NotBlank(message = "spring bean名称不能为空", groups = {Create.class, Update.class})
     @JsonProperty("bean_name")
     private String beanName;
     /**
@@ -44,6 +50,7 @@ public class BaseScheduleTaskEntity implements Serializable {
     /**
      * cron表达式
      */
+    @NotBlank(message = "cron表达式不能为空", groups = {Create.class, Update.class})
     @JsonProperty("cron_expression")
     private String cronExpression;
     /**

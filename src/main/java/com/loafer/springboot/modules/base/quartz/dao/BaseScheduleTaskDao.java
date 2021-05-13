@@ -1,11 +1,7 @@
 package com.loafer.springboot.modules.base.quartz.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.loafer.springboot.modules.base.quartz.entity.BaseScheduleTaskEntity;
-import com.loafer.springboot.modules.base.user.dto.BaseUserDto;
-import com.loafer.springboot.modules.base.user.entity.BaseUserEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,5 +15,5 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface BaseScheduleTaskDao extends BaseMapper<BaseScheduleTaskEntity> {
 
-	
+	void updateBatch(@Param("ids") Long[] ids, @Param("status") Integer status);
 }

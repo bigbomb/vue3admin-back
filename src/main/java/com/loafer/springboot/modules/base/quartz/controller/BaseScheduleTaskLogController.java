@@ -22,12 +22,12 @@ public class BaseScheduleTaskLogController {
     private BaseScheduleTaskLogService baseScheduleTaskLogService;
 
     /**
-     * 系统用户分页列表
+     * 分页列表
      *
      * @api {GET} /base/schedule/log/page page
-     * @apiDescription 系统用户列表
+     * @apiDescription 定时任务分页列表
      * @apiVersion 1.0.0
-     * @apiGroup BaseUser
+     * @apiGroup BaseScheduleTaskLog
      * @apiName page
      * @apiParamExample 请求参数示例
      * {
@@ -66,18 +66,16 @@ public class BaseScheduleTaskLogController {
     }
 
     /**
-     * 系统用户分页列表 TODO:只显示当前用户创建用户 超级管理员显示所有用户
+     * 信息
      *
-     * @api {GET} /base/schedule/task/page page
-     * @apiDescription 系统用户列表
+     * @api {GET} /base/schedule/task/info/{id} info
+     * @apiDescription 定时任务信息
      * @apiVersion 1.0.0
-     * @apiGroup BaseUser
-     * @apiName page
+     * @apiGroup BaseScheduleTaskLog
+     * @apiName info
      * @apiParamExample 请求参数示例
      * {
-     *     current: 1, // 当前页
-     *     size: 10, // 页面大小
-     *     bean_name: "" // spring bean名称
+     *     id: 1 // ID
      * }
      * @apiSuccessExample 响应结果示例
      * {
@@ -85,21 +83,15 @@ public class BaseScheduleTaskLogController {
      *     message: '成功！',
      *     status: 'success'
      *     data: {
-     *         current: 1, // 当前页
-     *         size: 1, // 页面大小
-     *         total: 1, // 总条数
-     *         pages: 1, // 总页数
-     *         list: [{
-     *         	   id: '', // ID
-     *             task_id: '', // 任务id
-     *             bean_name: '', // spring bean名称
-     *             params: '', // 参数
-     *             status: '', // 任务状态 0：失败 1：成功
-     *             message: '', // 成功信息
-     *             error: '', // 失败信息
-     *             times: '', // 耗时(单位：毫秒)
-     *             created_at: ‘’ // 创建时间
-     *         }]
+     *         id: '', // ID
+     *         task_id: '', // 任务id
+     *         bean_name: '', // spring bean名称
+     *         params: '', // 参数
+     *         status: '', // 任务状态 0：失败 1：成功
+     *         message: '', // 成功信息
+     *         error: '', // 失败信息
+     *         times: '', // 耗时(单位：毫秒)
+     *         created_at: ‘’ // 创建时间
      *     }
      * }
      */

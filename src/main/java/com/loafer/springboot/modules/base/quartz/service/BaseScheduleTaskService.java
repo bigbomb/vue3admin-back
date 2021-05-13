@@ -35,34 +35,27 @@ public interface BaseScheduleTaskService extends IService<BaseScheduleTaskEntity
     void update(BaseScheduleTaskEntity baseScheduleTaskEntity);
 
     /**
-     * 批量更新
-     * @param ids 实体id
-     * @param status 状态
-     */
-    void updateBatch(Long ids, int status);
-
-    /**
      * 批量删除
      * @param ids 实体id
      */
-    void deleteBatch(Long ids);
+    void deleteBatch(Long[] ids);
 
     /**
      * 批量执行
      * @param ids 实体id
      */
-    void runBatch(Long ids);
+    void runBatch(Long[] ids);
 
     /**
      * 批量恢复
      * @param ids 实体id
      */
-    void resumeBatch(Long ids);
+    void resumeBatch(Long[] ids);
 
     /**
      * 批量暂停
      * @param ids 实体id
      */
-    void pauseBatch(Long ids);
+    void pauseBatch(Long[] ids);
 
 }

@@ -25,9 +25,9 @@ public class BaseScheduleTaskLogServiceImpl extends ServiceImpl<BaseScheduleTask
 
     @Override
     public RPage<BaseScheduleTaskLogEntity> queryPage(Map<String, Object> params) {
+        Page<BaseScheduleTaskLogEntity> page = new Query<BaseScheduleTaskLogEntity>().getPage(params);
         String beanName = (String)params.get("bean_name");
 
-        Page<BaseScheduleTaskLogEntity> page = new Query<BaseScheduleTaskLogEntity>().getPage(params);
         QueryWrapper<BaseScheduleTaskLogEntity> wrapper = new QueryWrapper<BaseScheduleTaskLogEntity>()
                 .like(StringUtils.isNotBlank(beanName), "bean_name", beanName)
                 .orderByDesc("created_at");
