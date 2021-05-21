@@ -37,6 +37,7 @@
         <if test="nickname != null and nickname != ''">
             and u.nickname like "%${nickname}%"
         </if>
+        order by u.created_at desc
     </select>
 
 <!--    IPage<BaseUserDto> queryByCreatorPage(Page<?> page, @Param("creator") Long creator, @Param("username") String username, @Param("nickname") String nickname);-->
@@ -50,6 +51,7 @@
             on r.id = ur.role_id
                    and r.deleted = 0
         where u.creator = #{creator} and u.deleted = 0
+        order by u.created_at desc
     </select>
 
 <!--    BaseUserDto queryById (Long id);-->
