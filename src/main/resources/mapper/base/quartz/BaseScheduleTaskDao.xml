@@ -5,7 +5,7 @@
 
 <!--    void updateBatch(@Param("ids") Long[] ids, @Param("status") Integer status);-->
     <update id="updateBatch">
-        update base_schedule_task set status = #{status} where job_id in
+        update base_schedule_task set status = #{status} where id in
         <foreach item="id" collection="ids"  open="(" separator="," close=")">
             #{id}
         </foreach>

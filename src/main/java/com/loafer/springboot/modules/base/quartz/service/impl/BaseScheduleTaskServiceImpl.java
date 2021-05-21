@@ -78,7 +78,7 @@ public class BaseScheduleTaskServiceImpl extends ServiceImpl<BaseScheduleTaskDao
     public void update(BaseScheduleTaskEntity baseScheduleTaskEntity) {
         QuartzUtils.updateScheduleTask(scheduler, baseScheduleTaskEntity);
 
-        this.update(baseScheduleTaskEntity);
+        this.updateById(baseScheduleTaskEntity);
     }
 
     @Override
