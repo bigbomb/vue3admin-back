@@ -7,11 +7,11 @@ service:
   context-path: /loafer
 
 database:
-  ip: 49.234.210.243
+  ip:
   port: 3306
   name: base
-  username: root
-  password: ll5271211314
+  username:
+  password: 
 
 druid:
   url-pattern: /druid/*

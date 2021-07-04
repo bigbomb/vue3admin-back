@@ -16,7 +16,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver # 数据库驱动名称
-      url: jdbc:mysql://${database.ip}:${database.port}/${database.name}?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false # url
+      url: jdbc:mysql://${database.ip}:${database.port}/${database.name}?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true # url
       username: ${database.username} # 用户名
       password: ${database.password} # 密码
 
